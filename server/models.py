@@ -38,7 +38,7 @@ class Session(db.Model):
     start_time = db.Column(db.DateTime)
     event_id = db.Column(db.Integer, db.ForeignKey('events.id'))
 
-    event = db.relationship('Event', back_populates='sessions', cascade='all, delete-orphan')
+    event = db.relationship('Event', back_populates='sessions')
 
     
     speakers = db.relationship('Speaker', secondary=session_speakers, back_populates='sessions')
@@ -71,7 +71,7 @@ class Bio(db.Model):
     bio_text = db.Column(db.Text, nullable=False)
     speaker_id = db.Column(db.Integer, db.ForeignKey('speakers.id'))
 
-    speaker = db.relationship('Speaker', back_populates='bio', uselist=False, cascade='all, delete-orphan')
+    speaker = db.relationship('Speaker', back_populates='bio')
 
 
 
