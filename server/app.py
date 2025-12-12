@@ -28,7 +28,7 @@ def get_events():
 
 @app.route('/events/<int:id>/sessions')
 def get_event_sessions(id):
-    event = Event.query.get(id)
+    event = Event.query.filter(Event.id == id).first()
     if event is None:
         return jsonify({"error": "Event not found"}), 404
     sessions_list = [ 
@@ -49,26 +49,26 @@ def get_speakers():
 
 @app.route('/speakers/<int:id>')
 def get_speaker(id):
-    speaker = Speaker.query.get(id)
+    speaker = Speaker.query.filter(Speaker.id == id).first()
     if speaker is None:
         return jsonify({"error": "Speaker not found"}), 404
     speaker_data = {
         'id': speaker.id,
         'name': speaker.name,
-        'bio': speaker.bio.content if speaker.bio else f"No bio available"
+        'bio_text': speaker.bio.bio_text if speaker.bio else f"No bio available"
     }
     return jsonify(speaker_data), 200
 
 
 @app.route('/sessions/<int:id>/speakers')
 def get_session_speakers(id):
-    session = Session.query.get(id)
+    session = Session.query.filter(Session.id == id).first()
     if session is None:
         return jsonify({"error": "Session not found"}), 404
     speakers_list = [ 
         {'id': speaker.id, 
          'name': speaker.name,
-         'bio': speaker.bio.content if speaker.bio else f"No bio available"
+         'bio_text': speaker.bio.bio_text if speaker.bio else f"No bio available"
          } for speaker in session.speakers ]
     return jsonify(speakers_list), 200
 
